@@ -115,6 +115,8 @@ namespace TaxBracket
             {
                 int tax = brack.CalcTaxes(adjustedIncome);
                 totalTaxes += tax;
+                //USe string format witth interpolation. Fixed point
+                //https://docs.microsoft.com/en-us/dotnet/standard/base-types/standard-numeric-format-strings#FFormatString
                 Console.WriteLine($"Taxes at {brack.GetPercent() * 100:F0}%: {tax}");
 
             }
