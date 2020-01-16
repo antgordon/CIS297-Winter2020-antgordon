@@ -1,5 +1,8 @@
 ﻿using System;
 
+//Author: Antony Gordon
+//Tax Bracket Project
+
 namespace TaxBracket
 {
     class Program
