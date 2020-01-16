@@ -4,7 +4,8 @@ namespace TaxBracket
 {
     class Program
     {
-
+        //Use single 2019 tax bracket
+       // http://www.moneychimp.com/features/tax_brackets.htm
         static Bracket[] brackets = {
             new Bracket(0,9_700,0.10),
             new Bracket(9_700,39_475, 0.12),
@@ -109,7 +110,7 @@ namespace TaxBracket
             int adjustedIncome = income - deductions;
             Console.WriteLine($"Adjusted income {adjustedIncome}={income}-{deductions}");
             int totalTaxes = 0;
-            int[] taxtBreakdown = new int[brackets.Length];
+           // int[] taxtBreakdown = new int[brackets.Length];//Store the results from each tax bracket
 
             foreach (Bracket brack in brackets)
             {
@@ -117,17 +118,19 @@ namespace TaxBracket
                 totalTaxes += tax;
                 //USe string format witth interpolation. Fixed point
                 //https://docs.microsoft.com/en-us/dotnet/standard/base-types/standard-numeric-format-strings#FFormatString
-                Console.WriteLine($"Taxes at {brack.GetPercent() * 100:F0}%: {tax}");
+                Console.WriteLine($"Taxes at {brack.GetPercent() * 100.0:F0}%: {tax}");
 
             }
 
             Console.WriteLine($"Total Taxes {totalTaxes}");
+            Console.WriteLine($"Taxes as a percentage of Adjusted income { Math.Floor((double)totalTaxes/(double)adjustedIncome * 100.0):F0}%");
+            Console.WriteLine($"Taxes as a percentage of Gross income { Math.Floor((double)totalTaxes / (double)income * 100.0) :F0}%");
 
             Console.ReadKey();
         }
     }
 
-
+    //Use unction object to manage brackets
     class Bracket
     {
         private readonly int _min;
@@ -155,10 +158,10 @@ namespace TaxBracket
         
 
                 if (income >= _max) {
-                    return (int)Math.Round((_max - _min) * _percent);
+                    return (int)Math.Floor((_max - _min) * _percent);
                 } else {
                     int working = income - _min;
-                    return (int)Math.Round((working) * _percent);
+                    return (int)Math.Floor((working) * _percent);
                 }
         
 
