@@ -20,6 +20,8 @@ namespace TexBracketWPF
 
         public bool UsingStandardDeduction{ get; set; }
 
+        public bool Loaded { get; set; }
+
         public const int STANDARD_DEDUCTION = 12_200;
     }
 }

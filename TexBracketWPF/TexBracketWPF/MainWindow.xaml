@@ -8,12 +8,12 @@
         Title="MainWindow" Height="450" Width="800">
     <Grid>
         <Label x:Name="grossIncomeLabel" Content="Gross Income" HorizontalAlignment="Left" Margin="66,64,0,0" VerticalAlignment="Top"/>
-        <Button x:Name="clearAllButton" Content="Clear All" HorizontalAlignment="Left" Margin="585,82,0,0" VerticalAlignment="Top"/>
-        <Button x:Name="calculateButton" Content="Calculate" HorizontalAlignment="Left" Margin="585,109,0,0" VerticalAlignment="Top"/>
+        <Button x:Name="clearAllButton" Content="Clear All" HorizontalAlignment="Left" Margin="585,82,0,0" VerticalAlignment="Top" Click="clearAllButton_Click"/>
+        <Button x:Name="calculateButton" Content="Calculate" HorizontalAlignment="Left" Margin="585,109,0,0" VerticalAlignment="Top" Click="calculateButton_Click"/>
         <RadioButton x:Name="deductStandRadio" Content="Standard Deduction($12,200)" HorizontalAlignment="Left" Margin="292,92,0,0" VerticalAlignment="Top" Checked="deductStandRadio_Checked" IsChecked="True"/>
-        <RadioButton x:Name="deductItemRadio" Content="Itemize" HorizontalAlignment="Left" Margin="292,120,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="grossIncomeTextbox" HorizontalAlignment="Left" Margin="66,90,0,0" Text="0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
-        <TextBox x:Name="deductItemTextBox" HorizontalAlignment="Left" Margin="367,120,0,0" Text="0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" TextChanged="TextBox_TextChanged"/>
+        <RadioButton x:Name="deductItemRadio" Content="Itemize" HorizontalAlignment="Left" Margin="292,120,0,0" VerticalAlignment="Top" Checked="deductItemRadio_Checked"/>
+        <TextBox x:Name="grossIncomeTextbox" HorizontalAlignment="Left" Margin="66,90,0,0" Text="0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" KeyDown="grossIncomeTextbox_KeyDown"/>
+        <TextBox x:Name="deductItemTextBox" HorizontalAlignment="Left" Margin="367,120,0,0" Text="0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" TextChanged="TextBox_TextChanged" KeyDown="deductItemTextBox_KeyDown"/>
         <Label Content="Label" HorizontalAlignment="Left" Height="5" Margin="177,191,0,0" VerticalAlignment="Top" Width="6"/>
         <Label Content="Bracket Breakdown" HorizontalAlignment="Left" Margin="95,144,0,0" VerticalAlignment="Top"/>
         <Label x:Name="tax37" Content="37%" HorizontalAlignment="Left" Margin="168,176,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.316,0.888"/>
@@ -24,7 +24,9 @@
         <Label x:Name="tax12" Content="12%" HorizontalAlignment="Left" Margin="168,326,0,0" VerticalAlignment="Top"/>
         <Label x:Name="tax10" Content="10%" HorizontalAlignment="Left" Margin="168,357,0,0" VerticalAlignment="Top"/>
         <Label x:Name="taxTotal" Content="Total" HorizontalAlignment="Left" Margin="166,388,0,0" VerticalAlignment="Top"/>
-        <TextBlock HorizontalAlignment="Left" Margin="362,189,0,0" Text="TextBlock" TextWrapping="Wrap" VerticalAlignment="Top" Visibility="Visible"/>
+        <Label x:Name="deductionLabel2" Content="Deductions" HorizontalAlignment="Left" Margin="283,59,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.763,0.477"/>
+        <Label x:Name="taxPercentGross" Content="Percent of Gross Income" HorizontalAlignment="Left" Margin="358,321,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="taxPercentAdjust" Content="Percent of Adjusted Income" HorizontalAlignment="Left" Margin="358,352,0,0" VerticalAlignment="Top"/>
 
     </Grid>
 </Window>

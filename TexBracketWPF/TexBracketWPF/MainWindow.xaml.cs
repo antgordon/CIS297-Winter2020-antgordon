@@ -26,7 +26,10 @@ namespace TexBracketWPF
             _state = new GuiState();
             InitializeComponent();
 
+            _state.Loaded = true;
             publishState();
+
+   
         }
 
 
@@ -45,11 +48,13 @@ namespace TexBracketWPF
 
         private void pubDeduct() {
 
-         
+
+            if (deductionLabel2 == null)
+                return;
 
             if (_state.UsingStandardDeduction)
             {
-                deductionLabel.Content 
+                deductionLabel2.Content 
                     = $"Deductions ${GuiState.STANDARD_DEDUCTION}";
                 deductItemTextBox.Visibility = Visibility.Hidden;
             }
@@ -58,15 +63,20 @@ namespace TexBracketWPF
                 deductItemTextBox.Visibility = Visibility.Visible;
                 if (_state.Deductions > 0.0)
                 {
-                    deductionLabel.Content = $"Deductions ${_state.Deductions}";
+                    deductionLabel2.Content = $"Deductions ${_state.Deductions}";
                 }
                 else
                 {
-                    grossIncomeLabel.Content = "Deductions";
+                    deductionLabel2.Content = "Deductions";
                 }
             }
         }
         private void publishState() {
+
+
+            if (!_state.Loaded)
+                return;
+
 
             pubIncome();
 
@@ -89,11 +99,14 @@ namespace TexBracketWPF
             tax10.Content = $"10% ${taxesOwed[(int)TaxCalculator.Backets.PER_10]:F2}";
 
             taxTotal.Content = $"Total ${_state.TaxResults.TotalTaxesOwed:F2}";
+            taxPercentGross.Content = $"Percent of Gross Income {_state.TaxResults.TaxesPecentOfGrossIncome * 100.0 :F2}%";
+            taxPercentAdjust.Content = $"Percent of Adjusted Income {_state.TaxResults.TaxesPecentOfAdjustedIncome * 100.0:F2}%";
 
         }
 
         private void deductStandRadio_Checked(object sender, RoutedEventArgs e)
         {
+           
             _state.UsingStandardDeduction = true;
             publishState();
         }
@@ -123,21 +136,28 @@ namespace TexBracketWPF
         private void clearAllButton_Click(object sender, RoutedEventArgs e)
         {
             _state = new GuiState();
+            _state.Loaded = true;
             publishState();
         }
 
         private void grossIncomeTextbox_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Enter) {
+            Key sel = e.Key;
+
+            if (e.Key == Key.Return) {
 
                 int value = 0;
 
 
                 if (int.TryParse(grossIncomeTextbox.Text, out value))
                 {
-                    grossIncomeTextbox.Text = String.Empty;
-                    _state.GrossIncome += value;
-                    publishState();
+
+                    if (value > 0)
+                    {
+                        grossIncomeTextbox.Text = String.Empty;
+                        _state.GrossIncome += value;
+                        publishState();
+                    }
 
                 }
                 else { 
@@ -148,7 +168,7 @@ namespace TexBracketWPF
 
         private void deductItemTextBox_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Enter)
+            if (e.Key == Key.Return)
             {
 
                 int value = 0;
@@ -156,9 +176,13 @@ namespace TexBracketWPF
 
                 if (int.TryParse(deductItemTextBox.Text, out value))
                 {
-                    deductItemTextBox.Text = String.Empty;
-                    _state.Deductions += value;
-                    publishState();
+
+                    if (value > 0)
+                    {
+                        deductItemTextBox.Text = String.Empty;
+                        _state.Deductions += value;
+                        publishState();
+                    }
 
                 }
                 else
@@ -172,5 +196,10 @@ namespace TexBracketWPF
         {
 
         }
+
+        /*private void deductItemRadio_Checked_1(object sender, RoutedEventArgs e)
+        {
+
+        }*/
     }
 }
