@@ -132,26 +132,26 @@ namespace WPFYahtzee.model
 
                     }
 
-                    bool foundEmpty = false;
+
+                    int inSeq = 0;
 
 
                     for (int index = 1; index < DiceSet.DICE_FACE + 1; index += 1)
                     {
                         if (count[index] == 0)
                         {
-                            if (foundEmpty)
-                            {
-                                return false;
-                            }
-                            else
-                            {
-                                foundEmpty = true;
-                            }
+                            inSeq = 0;
+                        }
+                        else {
+                            inSeq += 1;
+
+                            if (inSeq >= 4)
+                                return true;
                         }
 
                     }
 
-                    return true;
+                    return inSeq >= 3;
                 },
 
                 ScorePotential = (diceset) => 30
@@ -170,16 +170,26 @@ namespace WPFYahtzee.model
                     }
 
 
+                    int inSeq = 0;
+
+
                     for (int index = 1; index < DiceSet.DICE_FACE + 1; index += 1)
                     {
                         if (count[index] == 0)
                         {
-                            return false;
+                            inSeq = 0;
+                        }
+                        else
+                        {
+                            inSeq += 1;
+
+                            if (inSeq >= 5)
+                                return true;
                         }
 
                     }
 
-                    return true;
+                    return inSeq >= 3;
                 },
 
                 ScorePotential = (diceset) => 40
@@ -329,4 +339,4 @@ namespace WPFYahtzee.model
 
     }
 }
-}
+

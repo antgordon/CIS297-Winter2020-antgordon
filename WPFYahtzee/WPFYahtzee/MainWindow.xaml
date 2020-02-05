@@ -7,6 +7,25 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
+        <Button Content="Roll Die" HorizontalAlignment="Left" Margin="308,334,0,0" VerticalAlignment="Top"/>
+        <Button Content="Die1" HorizontalAlignment="Left" Margin="235,173,0,0" VerticalAlignment="Top"/>
+        <Button Content="Die2" HorizontalAlignment="Left" Margin="275,173,0,0" VerticalAlignment="Top"/>
+        <Button Content="Die3" HorizontalAlignment="Left" Margin="325,173,0,0" VerticalAlignment="Top"/>
+        <Button Content="Die4" HorizontalAlignment="Left" Margin="375,173,0,0" VerticalAlignment="Top"/>
+        <Button Content="Die5" HorizontalAlignment="Left" Margin="425,173,0,0" VerticalAlignment="Top"/>
+        <Button Content="Ones" HorizontalAlignment="Left" Margin="632,57,0,0" VerticalAlignment="Top"/>
+        <Button Content="Twos" HorizontalAlignment="Left" Margin="632,100,0,0" VerticalAlignment="Top"/>
+        <Button Content="Threes" HorizontalAlignment="Left" Margin="630,140,0,0" VerticalAlignment="Top"/>
+        <Button Content="Fours" HorizontalAlignment="Left" Margin="632,178,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.533,-1.248"/>
+        <Button Content="Fives" HorizontalAlignment="Left" Margin="632,0,0,0" VerticalAlignment="Center" RenderTransformOrigin="0.457,-1.185"/>
+        <Button Content="Sixes"  HorizontalAlignment="Left" Margin="632,232,0,0" VerticalAlignment="Top"/>
+        <Button Content="ThreeOfKind" HorizontalAlignment="Left" Margin="632,301,0,0" VerticalAlignment="Top"/>
+        <Button Content="FourOfKind" HorizontalAlignment="Left" Margin="630,321,0,0" VerticalAlignment="Top"/>
+        <Button Content="Full House" HorizontalAlignment="Left" Margin="638,339,0,0" VerticalAlignment="Top"/>
+        <Button Content="Small Straight" HorizontalAlignment="Left" Margin="624,359,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.533,-1.248"/>
+        <Button Content="Large Straight" HorizontalAlignment="Left" Margin="632,0,0232,0" VerticalAlignment="Center" RenderTransformOrigin="0.457,-1.185"/>
+        <Button Content="Chance"  HorizontalAlignment="Left" Margin="638,379,0,0" VerticalAlignment="Top" RenderTransformOrigin="-1.753,1.035"/>
+        <Button Content="Yahtzee"  HorizontalAlignment="Left" Margin="638,404,0,0" VerticalAlignment="Top"/>
 
     </Grid>
 </Window>

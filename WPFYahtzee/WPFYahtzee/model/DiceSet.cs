@@ -71,7 +71,7 @@ namespace WPFYahtzee.model
 
 
         public void ResetHeld() {
-            foreach (GameDie die in DiceSet)
+            foreach (GameDie die in dice)
             {
                 die.IsHeld = false;
             }

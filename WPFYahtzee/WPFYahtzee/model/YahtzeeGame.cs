@@ -6,17 +6,19 @@ using System.Threading.Tasks;
 
 namespace WPFYahtzee.model
 {
-   public  class YahtzeeGame
+    public class YahtzeeGame
     {
 
         public DiceSet DiceSet { get; }
-        public PlayerState Player1State { get;  }
+        public PlayerState Player1State { get; }
 
-        public YahtzeeGame() {
+        public YahtzeeGame()
+        {
             DiceSet = new DiceSet(new Random());
             Player1State = new PlayerState(DiceSet, new ScoreCard());
 
         }
+    }
        
 
 }

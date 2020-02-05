@@ -20,25 +20,27 @@ namespace WPFYahtzee.model
         public int Throws { get; private set; }
 
 
-        public bool canThrow() { return Throws < 3; }
-        public bool canHoldDice()
+        public bool CanThrow() { return Throws < 3; }
+        public bool CanHoldDice()
         {
             return Throws > 0;
         }
 
-        public bool canScore()
+        public bool CanScore()
         {
             return Throws > 0;
         }
 
 
-        public void throwDice() {
+        public void ThrowDice() 
+        {
             DiceSet.RollDice();
             Throws += 1;
         }
 
 
-        public void reset() {
+        public void Reset() 
+        {
             Throws = 0;
             DiceSet.ResetHeld();
            
