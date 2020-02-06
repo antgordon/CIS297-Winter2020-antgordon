@@ -18,6 +18,7 @@ namespace WPFYahtzee.model
         {
             this.random = random;
             this.faces = faces;
+    
         }
 
         public int GetFaces()

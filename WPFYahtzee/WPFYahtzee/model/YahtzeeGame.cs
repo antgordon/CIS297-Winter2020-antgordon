@@ -18,6 +18,11 @@ namespace WPFYahtzee.model
             Player1State = new PlayerState(DiceSet, new ScoreCard());
 
         }
+
+
+        public bool IsGameOver() {
+            return Player1State.ScoreCard.IsFullCard();
+        }
     }
        
 

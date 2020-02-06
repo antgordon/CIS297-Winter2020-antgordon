@@ -15,20 +15,20 @@ namespace WPFYahtzee.model
         public PlayerState(DiceSet set, ScoreCard scoreCard) 
         {
             this.DiceSet = set;
-            this.ScoreCard = ScoreCard;
+            this.ScoreCard = scoreCard;
         }
         public int Throws { get; private set; }
 
 
-        public bool CanThrow() { return Throws < 3; }
+        public bool CanThrow() { return !ScoreCard.IsFullCard() && Throws < 3; }
         public bool CanHoldDice()
         {
-            return Throws > 0;
+            return !ScoreCard.IsFullCard() && Throws > 0;
         }
 
         public bool CanScore()
         {
-            return Throws > 0;
+            return !ScoreCard.IsFullCard() &&  Throws > 0;
         }
 
 
@@ -39,6 +39,13 @@ namespace WPFYahtzee.model
         }
 
 
+
+        public void UseScore(ScoreSlot slot, DiceSet set)
+        {
+
+            ScoreCard.UseScore(slot, set);
+            Reset();
+        }
         public void Reset() 
         {
             Throws = 0;

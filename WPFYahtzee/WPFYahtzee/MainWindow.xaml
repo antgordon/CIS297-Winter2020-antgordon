@@ -7,25 +7,62 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <Button Content="Roll Die" HorizontalAlignment="Left" Margin="308,334,0,0" VerticalAlignment="Top"/>
-        <Button Content="Die1" HorizontalAlignment="Left" Margin="235,173,0,0" VerticalAlignment="Top"/>
-        <Button Content="Die2" HorizontalAlignment="Left" Margin="275,173,0,0" VerticalAlignment="Top"/>
-        <Button Content="Die3" HorizontalAlignment="Left" Margin="325,173,0,0" VerticalAlignment="Top"/>
-        <Button Content="Die4" HorizontalAlignment="Left" Margin="375,173,0,0" VerticalAlignment="Top"/>
-        <Button Content="Die5" HorizontalAlignment="Left" Margin="425,173,0,0" VerticalAlignment="Top"/>
-        <Button Content="Ones" HorizontalAlignment="Left" Margin="632,57,0,0" VerticalAlignment="Top"/>
-        <Button Content="Twos" HorizontalAlignment="Left" Margin="632,100,0,0" VerticalAlignment="Top"/>
-        <Button Content="Threes" HorizontalAlignment="Left" Margin="630,140,0,0" VerticalAlignment="Top"/>
-        <Button Content="Fours" HorizontalAlignment="Left" Margin="632,178,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.533,-1.248"/>
-        <Button Content="Fives" HorizontalAlignment="Left" Margin="632,0,0,0" VerticalAlignment="Center" RenderTransformOrigin="0.457,-1.185"/>
-        <Button Content="Sixes"  HorizontalAlignment="Left" Margin="632,232,0,0" VerticalAlignment="Top"/>
-        <Button Content="ThreeOfKind" HorizontalAlignment="Left" Margin="632,301,0,0" VerticalAlignment="Top"/>
-        <Button Content="FourOfKind" HorizontalAlignment="Left" Margin="630,321,0,0" VerticalAlignment="Top"/>
-        <Button Content="Full House" HorizontalAlignment="Left" Margin="638,339,0,0" VerticalAlignment="Top"/>
-        <Button Content="Small Straight" HorizontalAlignment="Left" Margin="624,359,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.533,-1.248"/>
-        <Button Content="Large Straight" HorizontalAlignment="Left" Margin="632,0,0232,0" VerticalAlignment="Center" RenderTransformOrigin="0.457,-1.185"/>
-        <Button Content="Chance"  HorizontalAlignment="Left" Margin="638,379,0,0" VerticalAlignment="Top" RenderTransformOrigin="-1.753,1.035"/>
-        <Button Content="Yahtzee"  HorizontalAlignment="Left" Margin="638,404,0,0" VerticalAlignment="Top"/>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="123*"/>
+            <ColumnDefinition Width="37*"/>
+        </Grid.ColumnDefinitions>
+        <Border BorderThickness="1" BorderBrush="Black" HorizontalAlignment="Left" Height="44" Margin="202,285,0,0" VerticalAlignment="Top" Width="237"/>
+        <Border BorderThickness="1" BorderBrush="Black" HorizontalAlignment="Left" Height="379" Margin="559,0,0,0" VerticalAlignment="Top" Width="200" Grid.ColumnSpan="2"/>
+
+
+
+        <Button x:Name="rollDiceButton" Content="Roll Die" HorizontalAlignment="Left" Margin="202,334,0,0" VerticalAlignment="Top" Height="65" Width="237" Click="ThrowDie_Click"/>
+
+        <Button x:Name="ScoreOnesButton" Content="Ones" HorizontalAlignment="Left" Margin="71,11,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.47,-0.95" Height="14" Width="28" FontSize="8" Click="ScoreSlot_Click" Grid.Column="1"/>
+        <Button x:Name="ScoreTwosButton" Content="Twos" HorizontalAlignment="Left" Margin="71,33,0,0" VerticalAlignment="Top" FontSize="8" RenderTransformOrigin="0.895,0.435" Click="ScoreSlot_Click" Grid.Column="1"/>
+        <Button x:Name="ScoreThreesButton" Content="Threes" HorizontalAlignment="Left" Margin="70,55,0,0" VerticalAlignment="Top" FontSize="8" Click="ScoreSlot_Click" Grid.Column="1"/>
+        <Button x:Name="ScoreFoursButton" Content="Fours" HorizontalAlignment="Left" Margin="70,72,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.644,-1.204" FontSize="8" Click="ScoreSlot_Click" Grid.Column="1"/>
+        <Button x:Name="ScoreFivesButton" Content="Fives" HorizontalAlignment="Left" Margin="70,94,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.457,-1.185" FontSize="8" Click="ScoreSlot_Click" Grid.Column="1"/>
+        <Button x:Name="ScoreSixesButton" Content="Sixes"  HorizontalAlignment="Left" Margin="70,117,0,0" VerticalAlignment="Top" FontSize="9" Click="ScoreSlot_Click" Grid.Column="1"/>
+        <Button x:Name="ScoreThreeKindButton" Content="ThreeOfKind" HorizontalAlignment="Left" Margin="70,184,0,0" VerticalAlignment="Top" FontSize="8" Click="ScoreSlot_Click" Grid.Column="1"/>
+        <Button x:Name="ScoreFourKindButton" Content="FourOfKind" HorizontalAlignment="Center" Margin="0,206,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.346,-4.824" FontSize="8" Click="ScoreSlot_Click" Grid.Column="1"/>
+        <Button x:Name="ScoreFullHouseButton" Content="Full House" HorizontalAlignment="Left" Margin="70,231,0,0" VerticalAlignment="Top" FontSize="8" Grid.Column="1" Click="ScoreSlot_Click"/>
+        <Button x:Name="ScoreSmallStrButton" Content="Small Straight" HorizontalAlignment="Left" Margin="70,253,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.533,-1.248" FontSize="8" Click="ScoreSlot_Click" Grid.Column="1"/>
+        <Button x:Name="ScoreLargeStrButton" Content="Large Straight" HorizontalAlignment="Left" Margin="70,277,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.457,-1.185" FontSize="8" Click="ScoreSlot_Click"  Grid.Column="1"/>
+        <Button x:Name="ScoreChanceButton" Content="Chance"  HorizontalAlignment="Left" Margin="70,301,0,0" VerticalAlignment="Top" RenderTransformOrigin="-1.753,1.035" FontSize="8" Click="ScoreSlot_Click" Grid.Column="1"/>
+        <Button x:Name="ScoreYahtzeeButton" Content="Yahtzee"  HorizontalAlignment="Left" Margin="70,325,0,0" VerticalAlignment="Top" FontSize="8" Grid.Column="1" Click="ScoreSlot_Click"/>
+
+        <Button x:Name="Dice1NButton" Content="Die1" HorizontalAlignment="Left" Margin="221,168,0,0" VerticalAlignment="Top" FontWeight="Bold" Click="FreeDie_Click"/>
+        <Button x:Name="Dice2NButton" Content="Die2" HorizontalAlignment="Left" Margin="261,168,0,0" VerticalAlignment="Top" FontWeight="Bold" Click="FreeDie_Click"/>
+        <Button x:Name="Dice3NButton" Content="Die3" HorizontalAlignment="Left" Margin="306,169,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.463,4.528" FontWeight="Bold" Click="FreeDie_Click"/>
+        <Button x:Name="Dice4NButton" Content="Die4" HorizontalAlignment="Left" Margin="346,169,0,0" VerticalAlignment="Top" FontWeight="Bold" Click="FreeDie_Click"/>
+        <Button x:Name="Dice5NButton" Content="Die5" HorizontalAlignment="Left" Margin="385,169,0,0" VerticalAlignment="Top" FontWeight="Bold" Click="FreeDie_Click"/>
+
+        <Button x:Name="Dice1HButton" Content="Die1" HorizontalAlignment="Left" Margin="221,296,0,0" VerticalAlignment="Top" Visibility="Visible" FontWeight="Bold" Click="HeldDie_Click"/>
+        <Button x:Name="Dice2HButton" Content="Die2" HorizontalAlignment="Left" Margin="261,296,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.653,4.561" FontWeight="Bold" Click="HeldDie_Click"/>
+        <Button x:Name="Dice3HButton" Content="Die3" HorizontalAlignment="Left" Margin="302,296,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.463,4.528" FontWeight="Bold" Click="HeldDie_Click"/>
+        <Button x:Name="Dice4HButton" Content="Die4" HorizontalAlignment="Left" Margin="346,296,0,0" VerticalAlignment="Top" FontWeight="Bold" Click="HeldDie_Click"/>
+        <Button x:Name="Dice5HButton" Content="Die5" HorizontalAlignment="Left" Margin="385,296,0,0" VerticalAlignment="Top" FontWeight="Bold" Click="HeldDie_Click"/>
+
+        <Label x:Name="ScoreOnesLabel" Content="Ones:0" HorizontalAlignment="Left" Margin="573,7,0,0" VerticalAlignment="Top" Width="54" Height="20" FontSize="9" Grid.ColumnSpan="2"/>
+        <Label x:Name="ScoreTwosLabel" Content="Twos:0" HorizontalAlignment="Left" Margin="570,29,0,0" VerticalAlignment="Top" Width="57" Height="23" FontSize="9" Grid.ColumnSpan="2"/>
+        <Label x:Name="ScoreThreesLabel" Content="Threes:0" HorizontalAlignment="Left" Margin="570,52,0,0" VerticalAlignment="Top" Width="71" Height="21" FontSize="9" Grid.ColumnSpan="2"/>
+        <Label x:Name="ScoreFoursLabel" Content="Fours:0" HorizontalAlignment="Left" Margin="570,72,0,0" VerticalAlignment="Top" Width="77" Height="27" FontSize="9" Grid.ColumnSpan="2"/>
+        <Label x:Name="ScoreFivesLabel" Content="Fives:0" HorizontalAlignment="Left" Margin="573,93,0,0" VerticalAlignment="Top" Width="68" Height="24" FontSize="9" RenderTransformOrigin="0.401,0.594" Grid.ColumnSpan="2"/>
+        <Label x:Name="ScoreSixesLabel" Content="Sixes:0" HorizontalAlignment="Left" Margin="573,114,0,0" VerticalAlignment="Top" Width="79" Height="22" FontSize="9" Grid.ColumnSpan="2"/>
+        <Label x:Name="ScoreSumLabel" Content="Sum:0 " HorizontalAlignment="Left" Margin="573,133,0,0" VerticalAlignment="Top" Width="74" Height="20" FontSize="9" Grid.ColumnSpan="2"/>
+        <Label x:Name="ScoreBonusLabel" Content="Bonus:0" HorizontalAlignment="Left" Margin="573,156,0,0" VerticalAlignment="Top" Width="86" Height="20" FontSize="9" Grid.ColumnSpan="2"/>
+        <Label x:Name="ScoreThreeKindLabel" Content="Three Of Kind:0" HorizontalAlignment="Left" Margin="570,181,0,0" VerticalAlignment="Top" Width="89" Height="20" FontSize="9" Grid.ColumnSpan="2"/>
+        <Label x:Name="ScoreFourKindLabel" Content="Four Of Kind:0" HorizontalAlignment="Left" Margin="568,202,0,0" VerticalAlignment="Top" Width="91" Height="22" FontSize="9" Grid.ColumnSpan="2"/>
+        <Label x:Name="ScoreFullHouseLabel" Content="Full House:0" HorizontalAlignment="Left" Margin="570,227,0,0" VerticalAlignment="Top" Width="89" Height="20" FontSize="9" Grid.ColumnSpan="2"/>
+        <Label x:Name="ScoreSmallStrLabel" Content="Small Straight:0" HorizontalAlignment="Left" Margin="570,247,0,0" VerticalAlignment="Top" Width="110" Height="27" FontSize="9" Grid.ColumnSpan="2"/>
+        <Label x:Name="ScoreLargeStrLabel" Content="Large Straight:0" HorizontalAlignment="Left" Margin="569,269,0,0" VerticalAlignment="Top" Width="90" Height="23" FontSize="9" Grid.ColumnSpan="2"/>
+        <Label x:Name="ScoreChanceLabel" Content="Chance:0" HorizontalAlignment="Left" Margin="573,297,0,0" VerticalAlignment="Top" Width="79" Height="21" FontSize="9" RenderTransformOrigin="0.469,1.178" Grid.ColumnSpan="2"/>
+        <Label x:Name="ScoreYahtzeeLabel" Content="Yahtzee:0" HorizontalAlignment="Left" Margin="573,321,0,0" VerticalAlignment="Top" Width="68" Height="22" FontSize="9" Grid.ColumnSpan="2"/>
+        <Label x:Name="ScoreTotalLabel" Content="Total:0" HorizontalAlignment="Left" Margin="572,344,0,0" VerticalAlignment="Top" Width="68" Height="22" FontSize="9" Grid.ColumnSpan="2"/>
+        <Label Content="Yahtzee" HorizontalAlignment="Left" Margin="36,29,0,0" VerticalAlignment="Top"/>
+        <Label Content="By Antony Gordon" HorizontalAlignment="Left" Margin="50,45,0,0" VerticalAlignment="Top"/>
+
 
     </Grid>
 </Window>

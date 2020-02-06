@@ -233,6 +233,27 @@ namespace WPFYahtzee.model
         }
 
 
+        public bool IsFullCard() {
+
+            bool topFull = SLOT_ONES.Score.HasValue
+                && SLOT_TWOS.Score.HasValue
+                && SLOT_THREES.Score.HasValue
+                && SLOT_FOURS.Score.HasValue
+                && SLOT_FIVES.Score.HasValue
+                && SLOT_SIXES.Score.HasValue;
+
+            bool bottomFull = SLOT_THREE_OF_KIND.Score.HasValue
+                && SLOT_FOUR_OF_KIND.Score.HasValue
+                && SLOT_FULL_HOUSE.Score.HasValue
+                && SLOT_SMALL_STRAIGHT.Score.HasValue
+                && SLOT_LARGE_STRAIGHT.Score.HasValue
+                && SLOT_CHANCE.Score.HasValue
+                && SLOT_YAHTZEE.Score.HasValue;
+
+            return topFull && bottomFull;
+        }
+
+
 
         public void UseScore(ScoreSlot slot, DiceSet set) {
 
