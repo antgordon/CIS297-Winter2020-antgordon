@@ -260,7 +260,13 @@ namespace WPFYahtzee.model
             if (slot == SLOT_YAHTZEE) { } //Add bonus here
 
             if (!slot.Score.HasValue) {
-                slot.Score = slot.ScorePotential(set);
+                if (slot.Qualifier(set))
+                {
+                    slot.Score = slot.ScorePotential(set);
+                }
+                else {
+                    slot.Score = 0;
+                }
             }
         }
 
