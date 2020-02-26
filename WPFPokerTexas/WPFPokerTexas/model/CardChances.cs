@@ -114,5 +114,21 @@ namespace WPFPokerTexas.model
 
           
         }
+
+
+
+        private static int[] getCardFrequency(OrderedCardSet set) {
+            int[] freq = new int[13 + 1];//13 ranks + 1 for high ace
+
+            foreach (PlayingCard card in set) { 
+                freq[ (int)card.CardRank] +=1;
+
+                if (card.CardRank == PlayingCard.Rank.ACE) {
+                    freq[13] += 1;
+                }
+            }
+            return freq;
+
+        }
     }
 }

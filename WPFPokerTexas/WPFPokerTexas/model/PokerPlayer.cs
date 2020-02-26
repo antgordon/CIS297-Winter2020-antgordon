@@ -11,7 +11,7 @@ namespace WPFPokerTexas.model
 
         int Id { get; }
 
-        int Money { get; set; };
+        int Money { get; set; }
 
         PokerHand Hand { get; set; }
 
