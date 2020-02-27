@@ -1,13 +1,13 @@
 ﻿namespace WPFPokerTexas.model
 {
 
-    public class PokerPlayerRobo : PokerPlayer {
+    public class PokerPlayerHuman : PokerPlayer {
 
 
         private PokerGame game;
         private int id;
 
-        public PokerPlayerRobo(int id, PokerGame game) {
+        public PokerPlayerHuman(int id, PokerGame game) {
             this.id = id;
             this.game = game;
         }
@@ -18,20 +18,33 @@
         public PokerHand Hand { get; set; }
         public OrderedCardSet HandCards { get; set; }
 
+
+        public bool IsTurn() {
+            return game.Stage == PokerGame.GameStage.PLAYER_TURN;
+        }
+
+        public void FoldHand() {
+            if (game.Stage == PokerGame.GameStage.PLAYER_TURN)
+            {
+                game.NotifyOnResponse(this, PokerPlayer.PokerResponse.FOLD);
+
+            }
+        }
+
+        public void RaiseHand()
+        {
+            if (game.Stage == PokerGame.GameStage.PLAYER_TURN)
+            {
+                game.NotifyOnResponse(this, PokerPlayer.PokerResponse.RAISE);
+
+            }
+        }
+
+
         public void NotifyOnTurn(int id)
         {
 
-            if (game.Stage == PokerGame.GameStage.OPPONENT_TURN) {
-                CardChances.HandPlayResult result =  CardChances.TestHandChances(game.GameDealer.CommunityCards, Hand);
-                if (result.Wins * 2 > result.SampleCount)
-                {
-                    game.NotifyOnResponse(this, PokerPlayer.PokerResponse.RAISE);
-                }
-                else {
-                    game.NotifyOnResponse(this, PokerPlayer.PokerResponse.FOLD);
-                }
-            
-            }
+        
            
         }
     }

@@ -13,6 +13,14 @@ namespace WPFPokerTexas.model.pokerhands
 
         public PokerHand.HandValidator Validator => throw new NotImplementedException();
 
+        public FullHouseHand(PlayingCard trippleHigh, PlayingCard pairLow)
+        {
+            TrippleHigh = trippleHigh;
+            PairLow = pairLow;
+        }
+
+        public PlayingCard TrippleHigh { get; }
+        public PlayingCard PairLow { get; }
         public int CompareTo([AllowNull] PokerHand other)
         {
             throw new NotImplementedException();

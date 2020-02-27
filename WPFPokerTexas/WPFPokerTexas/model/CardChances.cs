@@ -16,7 +16,7 @@ namespace WPFPokerTexas.model
                 FourKindHand.FourKindValidator,
                 FullHouseHand.FullHouseValidator,
                 FlushHand.FlushValidator,
-                StraighthHand.StraightValidator,
+                StraightHand.StraightValidator,
                 ThreeKindHand.ThreeKindValidator,
                 TwoPairHand.TwoPairValidator,
                 OnePairHand.OnePairValidator,
@@ -84,17 +84,41 @@ namespace WPFPokerTexas.model
 
         public static PokerHand IdentitfyHand(OrderedCardSet cards) {
 
-            PokerHand hand = null;
+            /*PokerHand hand = null;
 
-            foreach (PokerHand.HandValidator validator in testOrder) {
+             foreach (PokerHand.HandValidator validator in testOrder) {
 
-                if (validator(cards, out hand)) {
-                    break;
-                }
+                 if (validator(cards, out hand)) {
+                     break;
+                 }
+             }
+
+             return hand;*/
+
+            int[] cardFreq = new int[13];
+            foreach (PlayingCard card in cards) 
+            {
+                int rank = (int)card.CardRank;
+                cardFreq[rank] += 1;
+
+              
             }
 
-            return hand;
-            
+        skip: for (int high = cardFreq.Length - 1; high >= 4; high -= 1)
+            {
+
+                for (int index = high; index > high - 5; index -= 1)
+                {
+                    if (cardFreq[index] < 1)
+                    {
+                        continue skip;
+                    }
+                }
+
+                PlayingCard card
+                }
+
+
         }
 
 
@@ -115,6 +139,22 @@ namespace WPFPokerTexas.model
           
         }
 
+
+        private static IEnumerator<ValueTuple<int, int>> forwardLoop(int[] freq) {
+
+            for (int index = 0; index < freq.Length; index+=1) {
+                yield return (index, freq[index]);
+            }
+        }
+
+        private static IEnumerator<ValueTuple<int, int>> backwardLoop(int[] freq)
+        {
+
+            for (int index = freq.Length-1; index >=0; index -= 1)
+            {
+                yield return (index, freq[index]);
+            }
+        }
 
 
         private static int[] getCardFrequency(OrderedCardSet set) {

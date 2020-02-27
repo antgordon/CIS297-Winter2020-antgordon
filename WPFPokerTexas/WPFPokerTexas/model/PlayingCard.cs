@@ -8,7 +8,7 @@ namespace WPFPokerTexas.model
     public class PlayingCard: IComparable<PlayingCard> { 
 
 
-        public enum Rank { ACE, TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE, TEN, JACK, QUEEN, KING}
+        public enum Rank {  TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE, TEN, JACK, QUEEN, KING, ACE}
         public enum Suit { CLUBS, DIAMONDS, HEARTS, SPADES}
 
         public Rank CardRank { get; }
