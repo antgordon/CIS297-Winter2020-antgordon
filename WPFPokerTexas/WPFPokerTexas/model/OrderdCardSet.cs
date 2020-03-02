@@ -12,7 +12,7 @@ namespace WPFPokerTexas.model
         public OrderedCardSet(ICollection<PlayingCard> cards) {
 
             List<PlayingCard> cardSort = new List<PlayingCard>(cards);
-            cardSort.Sort();
+            cardSort.Sort(SortCards);
             cards = cardSort;
         }
 
@@ -26,7 +26,7 @@ namespace WPFPokerTexas.model
             return cards.GetEnumerator();
         }
 
-        public IReadOnlyList<PlayingCard> asCollection() {
+        public IReadOnlyList<PlayingCard> asList() {
             return cards;
 
         }
@@ -37,5 +37,22 @@ namespace WPFPokerTexas.model
             get => cards[index];
                 
         }
+        public static int SortCards(PlayingCard firstCard, PlayingCard secondCard)
+        {
+
+            int compare = firstCard.CompareTo(secondCard);
+
+            if (compare == 0)
+            {
+                compare = (int)firstCard.CardSuit - (int)secondCard.CardSuit;
+            }
+
+
+            return compare;
+
+        }
     }
+
+
+ 
 }

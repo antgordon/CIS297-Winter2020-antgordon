@@ -82,7 +82,8 @@ namespace WPFPokerTexas.model
         }
 
 
-        public static PokerHand IdentitfyHand(OrderedCardSet cards) {
+        public static PokerHand IdentitfyHand(OrderedCardSet cards)
+        {
 
             /*PokerHand hand = null;
 
@@ -96,13 +97,94 @@ namespace WPFPokerTexas.model
              return hand;*/
 
             int[] cardFreq = new int[13];
-            foreach (PlayingCard card in cards) 
+            foreach (PlayingCard card in cards)
             {
                 int rank = (int)card.CardRank;
                 cardFreq[rank] += 1;
 
-              
+
             }
+
+            {//Straight n Flush
+
+                PokerHand hand = DetectStraightNFlush(cardFreq, cards);
+                if (hand != null)
+                    return hand;
+
+            }
+
+
+            {//FourKind
+
+                PokerHand hand = DetectFourKind(cardFreq);
+                if (hand != null)
+                    return hand;
+
+            }
+
+            {//Full House
+
+                PokerHand hand = DetectFullHouse(cardFreq);
+                if (hand != null)
+                    return hand;
+
+            }
+            {//Three Kind
+
+                PokerHand hand = DetectThreeKind(cardFreq);
+                if (hand != null)
+                    return hand;
+
+            }
+
+            {//Two Pair
+
+                PokerHand hand = DetectTwoPair(cardFreq);
+                if (hand != null)
+                    return hand;
+
+            }
+
+            {//One Pair
+
+                PokerHand hand = DetectOnePair(cardFreq);
+                if (hand != null)
+                    return hand;
+
+            }
+
+
+
+            return new HighCardHand(cards);
+        }
+
+
+        public static PokerHand DetectStraightNFlush(int[] cardFreq, OrderedCardSet cards) {
+
+            //Flush
+            PlayingCard.Suit? flushSuit = null;
+            {
+
+                foreach (PlayingCard card in cards)
+                {
+
+                    if (flushSuit.HasValue)
+                    {
+                        if (card.CardSuit != flushSuit.Value)
+                        {
+                            flushSuit = null;
+                            break;
+                        }
+                    }
+                    else
+                    {
+                        flushSuit = card.CardSuit;
+                    }
+                }
+            }
+
+            //Straight
+            int? straightRank = null;
 
         skip: for (int high = cardFreq.Length - 1; high >= 4; high -= 1)
             {
@@ -111,16 +193,226 @@ namespace WPFPokerTexas.model
                 {
                     if (cardFreq[index] < 1)
                     {
-                        continue skip;
+                        goto skip;
                     }
                 }
 
-                PlayingCard card
-                }
+                straightRank = high;
+            }
 
+
+            if (straightRank.HasValue && flushSuit.HasValue)
+            {
+
+                return new StraightFlushHand(straightRank.Value, flushSuit.Value);
+            }
+            else
+            {
+                if (straightRank.HasValue)
+                {
+                    return new StraightHand(straightRank.Value);
+                }
+                else if (flushSuit.HasValue)
+                {
+                    return new FlushHand(flushSuit.Value, cards);
+                }
+            }
+
+            return null;
 
         }
+        public static PokerHand DetectFourKind(int[] cardFreq) {
+            int? four = null;
+            int? one = null;
+            for (int index = 0; index < cardFreq.Length; index += 1)
+            {
 
+                if (cardFreq[index] == 4 && !four.HasValue)
+                {
+                    four = index;
+                 
+                }
+                else if (cardFreq[index] == 1 && !one.HasValue)
+                {
+                    one = index;
+                 
+                } 
+
+               
+            }
+
+
+   
+            if (four.HasValue && one.HasValue)
+            {
+                return new FourKindHand(four.Value, one.Value);
+            }
+            else {
+                return null;
+
+            }
+        }
+
+        public static PokerHand DetectFullHouse(int[] cardFreq)
+        {
+            int? three = null;
+            int? two = null;
+
+            for (int index = 0; index < cardFreq.Length; index += 1)
+            {
+
+                if (cardFreq[index] == 3 && !three.HasValue)
+                {
+                    three = index;
+
+                }
+                else if (cardFreq[index] == 2 && !two.HasValue)
+                {
+                    two = index;
+
+                }
+            }
+
+
+
+            if (three.HasValue && two.HasValue)
+            {
+                return new FullHouseHand(three.Value, two.Value);
+            }
+            else
+            {
+                return null;
+
+            }
+        }
+
+
+        public static PokerHand DetectThreeKind(int[] cardFreq)
+        {
+            int? three = null;
+            int? low = null;
+            int? high = null;
+
+            for (int index = 0; index < cardFreq.Length; index += 1)
+            {
+
+                if (cardFreq[index] == 3 && !three.HasValue)
+                {
+                    three = index;
+
+                }
+                else if (cardFreq[index] == 1)
+                {
+                    if (!low.HasValue)
+                    {
+                        low = index;
+                    }
+                    else if (!high.HasValue) {
+                        high = index;
+                    }
+
+                }
+            }
+
+
+
+            if (three.HasValue && low.HasValue && high.HasValue)
+            {
+                return new ThreeKindHand(three.Value, high.Value, low.Value);
+            }
+            else
+            {
+                return null;
+
+            }
+        }
+
+        public static PokerHand DetectTwoPair(int[] cardFreq)
+        {
+            int? twoHigh = null;
+            int? twoLow = null;
+            int? kicker = null;
+
+            for (int index = 0; index < cardFreq.Length; index += 1)
+            {
+
+                if (cardFreq[index] == 1 && !kicker.HasValue)
+                {
+                    kicker = index;
+
+                }
+                else if (cardFreq[index] == 2)
+                {
+                    if (!twoLow.HasValue)
+                    {
+                        twoLow = index;
+                    }
+                    else if (!twoHigh.HasValue)
+                    {
+                        twoHigh = index;
+                    }
+
+                }
+            }
+
+
+
+            if (twoHigh.HasValue && twoLow.HasValue && kicker.HasValue)
+            {
+                return new TwoPairHand(twoHigh.Value, twoLow.Value, kicker.Value);
+            }
+            else
+            {
+                return null;
+
+            }
+        }
+
+        public static PokerHand DetectOnePair(int[] cardFreq)
+        {
+            int? two = null;
+            int? kickLow = null;
+            int? kickMed = null;
+            int? kickHigh = null;
+
+            for (int index = 0; index < cardFreq.Length; index += 1)
+            {
+
+                if (cardFreq[index] ==2 && !two.HasValue)
+                {
+                    two = index;
+
+                }
+                else if (cardFreq[index] == 1)
+                {
+                    if (!kickLow.HasValue)
+                    {
+                        kickLow = index;
+                    }
+                    else if (!kickMed.HasValue)
+                    {
+                        kickMed = index;
+                    }
+                    else if (!kickHigh.HasValue)
+                    {
+                        kickHigh = index;
+                    }
+
+                }
+            }
+
+
+
+            if (two.HasValue && kickLow.HasValue && kickMed.HasValue && kickHigh.HasValue)
+            {
+                return new OnePairHand(two.Value, kickHigh, kickMed.Value, kickLow.Value);
+            }
+            else
+            {
+                return null;
+
+            }
+        }
 
         public class HandPlayResult { 
         

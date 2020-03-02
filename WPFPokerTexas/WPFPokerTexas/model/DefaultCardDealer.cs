@@ -30,7 +30,7 @@ namespace WPFPokerTexas.model
         public void ShuffleAndDealDeck(PokerPlayer playerOne, PokerPlayer playerTwo)
         {
             Random random = new Random();
-            List<PlayingCard> cards = new List<PlayingCard>(fullDeck.asCollection());
+            List<PlayingCard> cards = new List<PlayingCard>(fullDeck.asList());
             
             //Player one
             List<PlayingCard> oneCards = new List<PlayingCard>();

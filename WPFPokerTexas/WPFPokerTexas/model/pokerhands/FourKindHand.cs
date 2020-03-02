@@ -7,24 +7,60 @@ namespace WPFPokerTexas.model.pokerhands
 {
     public class FourKindHand : PokerHand
     {
-
-        public static PokerHand.HandValidator FourKindValidator = (OrderedCardSet cards, out PokerHand hand) => { hand = null; return false; };
+    OrderedCardSet
         public PokerHand.HandType Type => PokerHand.HandType.FOUR_KIND;
 
-        public PokerHand.HandValidator Validator => throw new NotImplementedException();
 
-
-        public FourKindHand(PlayingCard fourCard, PlayingCard kicker) {
-            FourCard = fourCard;
+        public FourKindHand(int fourCardRank, int kicker) {
+            FourCardRank = fourCardRank;
             Kicker = kicker;
         }
 
-        public PlayingCard FourCard { get; }
+        public int FourCardRank { get; }
 
-        public PlayingCard Kicker { get; }
+        public int Kicker { get; }
         public int CompareTo([AllowNull] PokerHand other)
         {
-            throw new NotImplementedException();
+            if (other == null)
+            {
+                return 1;
+            }
+            else
+            {
+
+                if (PokerHand.compareHandRank(this, other) == 0)
+                {
+                   FourKindHand otherHand = other as FourKindHand;
+                    if (other == null)
+                    {
+                        throw new ArgumentException("Not valid hand");
+                    }
+
+                    OrderedCardSet self = CardSet;
+                    OrderedCardSet outter = otherHand.CardSet;
+                    for (int high = CardSet.Count - 1; high >= 0; high += 1)
+                    {
+                        PlayingCard first = self.asList()[high];
+                        PlayingCard second = outter.asList()[high];
+
+                        int compare = first.CompareTo(second);
+
+                        if (compare != 0)
+                        {
+                            return compare;
+
+                        }
+
+                    }
+
+                    return 0;
+
+                }
+                else
+                {
+                    return 0;
+                }
+            }
         }
     }
 }

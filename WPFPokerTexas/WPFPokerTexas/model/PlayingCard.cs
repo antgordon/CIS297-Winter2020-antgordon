@@ -33,7 +33,7 @@ namespace WPFPokerTexas.model
                     return (int)CardRank - (int)other.CardRank;
                 }
                 else {
-                    return (int)CardSuit - (int)other.CardSuit;
+                    return 0;
                 }
             }
         }

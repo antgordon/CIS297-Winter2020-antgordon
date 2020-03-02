@@ -7,15 +7,9 @@ namespace WPFPokerTexas.model.pokerhands
 {
     public class ThreeKindHand : PokerHand
     {
-
-        public static PokerHand.HandValidator ThreeKindValidator = (OrderedCardSet cards, out PokerHand hand) => { hand = null; return false; };
         public PokerHand.HandType Type => PokerHand.HandType.THREE_KIND;
 
-        public PokerHand.HandValidator Validator => throw new NotImplementedException();
-
-
-
-        public ThreeKindHand(PlayingCard threeCard, PlayingCard kickerHigh, PlayingCard kickerLow)
+        public ThreeKindHand(int threeCard, int kickerHigh, int kickerLow)
         {
             ThreeCard = threeCard;
             KickerLow = kickerLow;
@@ -23,11 +17,11 @@ namespace WPFPokerTexas.model.pokerhands
      
         }
 
-        public PlayingCard ThreeCard { get; }
+        public int ThreeCard { get; }
 
-        public PlayingCard KickerLow { get; }
+        public int KickerLow { get; }
 
-        public PlayingCard KickerHigh { get; }
+        public int KickerHigh { get; }
         public int CompareTo([AllowNull] PokerHand other)
         {
             throw new NotImplementedException();
