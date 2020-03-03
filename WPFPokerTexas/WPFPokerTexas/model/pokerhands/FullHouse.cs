@@ -22,7 +22,36 @@ namespace WPFPokerTexas.model.pokerhands
         public int  PairLow { get; }
         public int CompareTo([AllowNull] PokerHand other)
         {
-            throw new NotImplementedException();
+            if (other == null)
+            {
+                return 1;
+            }
+            else
+            {
+                int compare = PokerHand.compareHandRank(this, other);
+                if (compare == 0)
+                {
+                    FullHouseHand otherHand = other as FullHouseHand;
+                    if (other == null)
+                    {
+                        throw new ArgumentException("Not valid hand");
+                    }
+
+                    compare = this.TripleHigh - otherHand.TripleHigh;
+                    if (compare == 0)
+                    {
+                        compare = this.PairLow - otherHand.PairLow;
+                    }
+
+
+                    return compare;
+
+                }
+                else
+                {
+                    return compare;
+                }
+            }
         }
     }
 }

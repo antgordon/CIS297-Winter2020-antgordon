@@ -5,7 +5,7 @@ using System.Text;
 
 namespace WPFPokerTexas.model
 {
-    public class PlayingCard: IComparable<PlayingCard> { 
+    public class PlayingCard: IComparable<PlayingCard>, IEquatable<PlayingCard> { 
 
 
         public enum Rank {  TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE, TEN, JACK, QUEEN, KING, ACE}
@@ -35,6 +35,21 @@ namespace WPFPokerTexas.model
                 else {
                     return 0;
                 }
+            }
+        }
+
+        public bool Equals([AllowNull] PlayingCard other)
+        {
+            if (other == null)
+            {
+                return false;
+            }
+            else if (other == this)
+            {
+                return true;
+            }
+            else {
+                return this.CardRank == other.CardRank && this.CardSuit == other.CardSuit;
             }
         }
     }

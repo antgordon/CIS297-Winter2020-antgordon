@@ -13,7 +13,7 @@ namespace WPFPokerTexas.model
 
             List<PlayingCard> cardSort = new List<PlayingCard>(cards);
             cardSort.Sort(SortCards);
-            cards = cardSort;
+            this.cards = cardSort;
         }
 
         public IEnumerator<PlayingCard> GetEnumerator()

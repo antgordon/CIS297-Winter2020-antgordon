@@ -8,7 +8,7 @@ namespace WPFPokerTexas.model.pokerhands
     public class FlushHand : PokerHand
     {
 
-        public PokerHand.HandType Type => PokerHand.HandType.STRAIGHT_FLUSH;
+        public PokerHand.HandType Type => PokerHand.HandType.FLUSH;
 
     
         public FlushHand(PlayingCard.Suit suit, OrderedCardSet cards)
@@ -30,7 +30,9 @@ namespace WPFPokerTexas.model.pokerhands
             }
             else {
 
-                if (PokerHand.compareHandRank(this, other) == 0)
+
+                int compare = PokerHand.compareHandRank(this, other);
+                if ( compare == 0)
                 {
                     FlushHand otherHand = other as FlushHand;
                     if (other == null) {
@@ -43,7 +45,7 @@ namespace WPFPokerTexas.model.pokerhands
                         PlayingCard first = self.asList()[high];
                         PlayingCard second = outter.asList()[high];
 
-                        int compare = first.CompareTo(second);
+                        compare = first.CompareTo(second);
 
                         if (compare != 0) {
                             return compare;
@@ -56,7 +58,7 @@ namespace WPFPokerTexas.model.pokerhands
 
                 }
                 else {
-                    return 0;
+                    return compare;
                 }
             }
         }

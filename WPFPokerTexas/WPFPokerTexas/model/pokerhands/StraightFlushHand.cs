@@ -19,7 +19,34 @@ namespace WPFPokerTexas.model.pokerhands
 
         public int CompareTo([AllowNull] PokerHand other)
         {
-            throw new NotImplementedException();
+            if (other == null)
+            {
+                return 1;
+            }
+            else
+            {
+                int compare = PokerHand.compareHandRank(this, other);
+
+                if ( compare == 0)
+                {
+                    StraightFlushHand otherHand = other as StraightFlushHand;
+                    if (other == null)
+                    {
+                        throw new ArgumentException("Not valid hand");
+                    }
+
+                    compare = this.CardRank - otherHand.CardRank;
+
+
+
+                    return compare;
+
+                }
+                else
+                {
+                    return compare;
+                }
+            }
         }
     }
 }

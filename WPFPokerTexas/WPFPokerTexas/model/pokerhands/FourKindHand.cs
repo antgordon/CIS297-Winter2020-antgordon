@@ -7,7 +7,6 @@ namespace WPFPokerTexas.model.pokerhands
 {
     public class FourKindHand : PokerHand
     {
-    OrderedCardSet
         public PokerHand.HandType Type => PokerHand.HandType.FOUR_KIND;
 
 
@@ -27,8 +26,8 @@ namespace WPFPokerTexas.model.pokerhands
             }
             else
             {
-
-                if (PokerHand.compareHandRank(this, other) == 0)
+                int compare = PokerHand.compareHandRank(this, other);
+                if ( compare == 0)
                 {
                    FourKindHand otherHand = other as FourKindHand;
                     if (other == null)
@@ -36,29 +35,18 @@ namespace WPFPokerTexas.model.pokerhands
                         throw new ArgumentException("Not valid hand");
                     }
 
-                    OrderedCardSet self = CardSet;
-                    OrderedCardSet outter = otherHand.CardSet;
-                    for (int high = CardSet.Count - 1; high >= 0; high += 1)
-                    {
-                        PlayingCard first = self.asList()[high];
-                        PlayingCard second = outter.asList()[high];
-
-                        int compare = first.CompareTo(second);
-
-                        if (compare != 0)
-                        {
-                            return compare;
-
-                        }
-
+                    compare = this.FourCardRank - otherHand.FourCardRank;
+                    if (compare == 0) {
+                        compare = this.Kicker - otherHand.Kicker;
                     }
 
-                    return 0;
+
+                    return compare;
 
                 }
                 else
                 {
-                    return 0;
+                    return compare;
                 }
             }
         }

@@ -8,10 +8,10 @@ namespace WPFPokerTexas.model
     public static class CardChances
     {
 
-        private static PokerHand.HandValidator[] testOrder;
+        //private static PokerHand.HandValidator[] testOrder;
        static CardChances() {
             //           STRAIGHT_FLUSH, FOUR_KIND, FULL_HOUSE, FLUSH, STRAIGHT, THREE_KIND, TWO_PAIR, ONE_PAIR, HIGH_CARD
-            testOrder = new PokerHand.HandValidator[] {
+            /*testOrder = new PokerHand.HandValidator[] {
                 StraightFlushHand.StraightFlushValidator,
                 FourKindHand.FourKindValidator,
                 FullHouseHand.FullHouseValidator,
@@ -21,7 +21,7 @@ namespace WPFPokerTexas.model
                 TwoPairHand.TwoPairValidator,
                 OnePairHand.OnePairValidator,
                 HighCardHand.HighCardValidator
-            };
+            };*/
         }
 
 
@@ -186,7 +186,7 @@ namespace WPFPokerTexas.model
             //Straight
             int? straightRank = null;
 
-        skip: for (int high = cardFreq.Length - 1; high >= 4; high -= 1)
+       for (int high = cardFreq.Length - 1; high >= 4; high -= 1)
             {
 
                 for (int index = high; index > high - 5; index -= 1)
@@ -198,6 +198,8 @@ namespace WPFPokerTexas.model
                 }
 
                 straightRank = high;
+                break;
+            skip:;
             }
 
 
@@ -405,7 +407,7 @@ namespace WPFPokerTexas.model
 
             if (two.HasValue && kickLow.HasValue && kickMed.HasValue && kickHigh.HasValue)
             {
-                return new OnePairHand(two.Value, kickHigh, kickMed.Value, kickLow.Value);
+                return new OnePairHand(two.Value, kickHigh.Value, kickMed.Value, kickLow.Value);
             }
             else
             {
