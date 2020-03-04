@@ -293,7 +293,95 @@ namespace UnitTestPokwer
 
 
         }
+
+        [TestMethod]
+        public void TestCardDealer()
+        {
+         
+
+
+             PokerPlayer pl1 = new FakePokerPlayer();
+            PokerPlayer pl2 = new FakePokerPlayer();
+            ICardDealer dealer = new DefaultCardDealer();
+            dealer.ShuffleAndDealDeck(pl1, pl2);
+            
+
+            Assert.AreEqual(52, dealer.FullDeck.Count);
+            Assert.AreEqual(43, dealer.RemainingDeck.Count);
+            Assert.AreEqual(5, dealer.CommunityCards.Count);
+            Assert.AreEqual(2, pl1.HandCards.Count);
+            Assert.AreEqual(2, pl2.HandCards.Count);
+        }
+
+        [TestMethod]
+        public void TestCardCombo()
+        {
+
+
+
+            PokerPlayer pl1 = new FakePokerPlayer();
+            PokerPlayer pl2 = new FakePokerPlayer();
+            ICardDealer dealer = new DefaultCardDealer();
+            dealer.ShuffleAndDealDeck(pl1, pl2);
+            List<OrderedCardSet> p1PossHands = CardChances.GetOpponentCombinationOfHandCards(dealer.FullDeck, pl2.HandCards, dealer.CommunityCards);
+            List<OrderedCardSet> p2PossHands = CardChances.GetOpponentCombinationOfHandCards(dealer.FullDeck, pl1.HandCards, dealer.CommunityCards);
+
+            List<PlayingCard> totalCards = new List<PlayingCard>();
+            totalCards.AddRange(pl1.HandCards);
+            totalCards.AddRange(dealer.CommunityCards);
+            Assert.AreEqual(7, totalCards.Count);
+
+            int len = 7;
+            int count = 0;
+
+            for (int t1 = 0; t1 < len; t1 += 1)
+            {
+                for (int t2 = t1 + 1; t2 < len; t2 += 1)
+                {
+                    for (int t3 = t2 + 1; t3 < len; t3 += 1)
+                    {
+                        for (int t4 = t3 + 1; t4 < len; t4 += 1)
+                        {
+                            for (int t5 = t4 + 1; t5 < len; t5 += 1)
+                            {
+
+                                count += 1;
+                            }
+                        }
+                    }
+                }
+            }
+
+            Assert.AreEqual(21, count);
+
+            List<OrderedCardSet> p1PokerHands = CardChances.GetCombinationOfPokerHands(pl1.HandCards, dealer.CommunityCards);
+            List<OrderedCardSet> p2PokerHands = CardChances.GetCombinationOfPokerHands(pl2.HandCards, dealer.CommunityCards);
+
+            Assert.AreEqual(990, p1PossHands.Count);
+            Assert.AreEqual(990, p2PossHands.Count);
+            Assert.AreEqual(21, p1PokerHands.Count);
+            Assert.AreEqual(21, p2PokerHands.Count);
+        }
+
+
+        private class FakePokerPlayer : PokerPlayer
+        {
+            public int Id { get; }
+
+            public int Money { get; set; }
+            public PokerHand Hand { get; set; }
+            public OrderedCardSet HandCards { get; set; }
+
+            public void NotifyOnTurn(int id)
+            {
+                throw new System.NotImplementedException();
+            }
+        }
+
+
     }
+
+
 
 
 

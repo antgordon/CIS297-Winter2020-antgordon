@@ -18,7 +18,19 @@ namespace WPFPokerTexas.model
         }
 
         private OrderedCardSet generateFullDeck() {
-            return null;
+
+            List<PlayingCard> cards = new List<PlayingCard>();
+            for (int suit = 0; suit < 4; suit += 1) {
+                for (int rank= 0; rank < 13; rank += 1)
+                {
+                    PlayingCard.Rank cardRank = (PlayingCard.Rank)rank;
+                    PlayingCard.Suit cardSuit = (PlayingCard.Suit)suit;
+                    cards.Add(new PlayingCard(cardRank, cardSuit));
+                }
+            }
+
+
+            return new OrderedCardSet(cards);
         }
 
         public OrderedCardSet CommunityCards => communityCards;

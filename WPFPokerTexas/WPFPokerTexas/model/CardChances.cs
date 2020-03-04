@@ -25,16 +25,41 @@ namespace WPFPokerTexas.model
         }
 
 
-        public static List<OrderedCardSet> GetCombinationOfHandCards(OrderedCardSet handCards, OrderedCardSet community) {
+        public static List<OrderedCardSet> GetCombinationOfPokerHands(OrderedCardSet handCards, OrderedCardSet community) {
+            List<PlayingCard> totalCards = new List<PlayingCard>();
+            totalCards.AddRange(handCards.asList());
+            totalCards.AddRange(community.asList());
 
-            return null;
+            List<OrderedCardSet> possibleSets = new List<OrderedCardSet>();
+            int len = totalCards.Count;
+
+
+            for (int t1 = 0; t1 < len; t1 += 1) {
+                for (int t2 = t1 +1; t2 < len; t2 += 1)
+                {
+                    for (int t3 = t2+1; t3 < len; t3 += 1)
+                    {
+                        for (int t4 = t3 + 1; t4 < len; t4 += 1)
+                        {
+                            for (int t5 = t4 + 1; t5 < len; t5 += 1)
+                            {
+
+                                OrderedCardSet set = new OrderedCardSet(new List<PlayingCard> { totalCards[t1], totalCards[t2], totalCards[t3], totalCards[t4], totalCards[t5] });
+                                possibleSets.Add(set);
+                            }
+                        }
+                    }
+                }
+            }
+
+            return possibleSets;
         }
 
         public static PokerHand ChooseBestHand(OrderedCardSet handCards, OrderedCardSet playingCards) {
 
             PokerHand best = null;
 
-            List<OrderedCardSet> createHands = GetCombinationOfHandCards(handCards, playingCards);
+            List<OrderedCardSet> createHands = GetCombinationOfPokerHands(handCards, playingCards);
 
 
             foreach (OrderedCardSet hand in createHands) {
@@ -53,10 +78,32 @@ namespace WPFPokerTexas.model
             return best;
         }
 
+        public static List<OrderedCardSet> GetOpponentCombinationOfHandCards(OrderedCardSet fullDeck, OrderedCardSet playerCards, OrderedCardSet communityCards)
+        {
+            List<PlayingCard> remaining = new List<PlayingCard>(fullDeck.asList());
+            remaining.RemoveAll(card => playerCards.asList().Contains(card));
+            remaining.RemoveAll(card => communityCards.asList().Contains(card));
+            return GetOpponentCombinationOfHandCards(new OrderedCardSet(remaining));
+        }
 
         public static List<OrderedCardSet> GetOpponentCombinationOfHandCards(OrderedCardSet otherCards) {
+            IList<PlayingCard> hand = otherCards.asList();
+            List<OrderedCardSet> results = new List<OrderedCardSet>();
 
-            return null;
+            for (int prim = 0; prim < hand.Count; prim += 1) {
+
+                for (int sec= prim +1 ; sec < hand.Count; sec += 1)
+                {
+                    PlayingCard primCard = hand[prim];
+                    PlayingCard secondCard = hand[sec];
+                    OrderedCardSet cardSet = new OrderedCardSet(new List<PlayingCard> { primCard, secondCard });
+                    results.Add(cardSet);
+                }
+            }
+
+
+
+            return results;
         }
 
         public static HandPlayResult TestHandChances(OrderedCardSet otherCards, PokerHand hand)

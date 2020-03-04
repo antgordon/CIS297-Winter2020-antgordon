@@ -8,7 +8,7 @@ namespace WPFPokerTexas.model
     public class OrderedCardSet: IEnumerable<PlayingCard>
     {
 
-        private IReadOnlyList<PlayingCard> cards;
+        private IList<PlayingCard> cards;
         public OrderedCardSet(ICollection<PlayingCard> cards) {
 
             List<PlayingCard> cardSort = new List<PlayingCard>(cards);
@@ -26,7 +26,7 @@ namespace WPFPokerTexas.model
             return cards.GetEnumerator();
         }
 
-        public IReadOnlyList<PlayingCard> asList() {
+        public IList<PlayingCard> asList() {
             return cards;
 
         }
