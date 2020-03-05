@@ -13,7 +13,7 @@ namespace WPFPokerTexas.model
 
         public HandType Type { get; }
 
-
+        public OrderedCardSet CardSet { get; }
         public static int compareHandRank(PokerHand first, PokerHand second) {
 
             int compare = first.Type.CompareTo(second.Type);

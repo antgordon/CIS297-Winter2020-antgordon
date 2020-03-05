@@ -9,13 +9,16 @@ namespace WPFPokerTexas.model.pokerhands
     {
         public PokerHand.HandType Type => PokerHand.HandType.THREE_KIND;
 
-        public ThreeKindHand(int threeCard, int kickerHigh, int kickerLow)
+        public ThreeKindHand(int threeCard, int kickerHigh, int kickerLow, OrderedCardSet cards)
         {
+            CardSet = cards;
             ThreeCard = threeCard;
             KickerLow = kickerLow;
             KickerHigh = KickerHigh;
      
         }
+
+        public OrderedCardSet CardSet { get;  }
 
         public int ThreeCard { get; }
 

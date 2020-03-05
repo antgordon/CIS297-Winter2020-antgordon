@@ -7,6 +7,32 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
+        <Label x:Name="ComCard1Label" Content="ComCard1" HorizontalAlignment="Left" Margin="311,114,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.545,0.541"/>
+        <Label x:Name="ComCard2Label" Content="ComCard2" HorizontalAlignment="Left" Margin="313,142,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.56,0.502"/>
+        <Label x:Name="ComCard4Label" Content="ComCard4" HorizontalAlignment="Left" Margin="312,0,0,0" VerticalAlignment="Center" RenderTransformOrigin="0.545,0.616" />
+        <Label x:Name="ComCard3Label" Content="ComCard3" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="313,173,0,0" RenderTransformOrigin="0.56,0.579"/>
+        <Label x:Name="ComCard5Label" Content="ComCard5" HorizontalAlignment="Left" Margin="313,230,0,0" VerticalAlignment="Top" />
+        <Label x:Name="PlayerCard1Label" Content="MyCard1" HorizontalAlignment="Left" Margin="642,57,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.415,0.464"/>
+        <Label x:Name="PlayerCard2Label" Content="MyCard2"  HorizontalAlignment="Left" Margin="722,57,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="OpCard1Label"  Content="OpCard1" HorizontalAlignment="Left" Margin="11,44,0,0" VerticalAlignment="Top"/>
+        <Label  x:Name="OpCard2Label" Content="OppCard2" HorizontalAlignment="Left" Margin="85,44,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.559,0.618"/>
+        <Button x:Name="PlayerCallButton" Content="Call" HorizontalAlignment="Left" Margin="259,295,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.642,0.503" Height="28" Width="48" Click="PlayerCallButton_Click"/>
+        <Button x:Name="PlayerFoldButton" Content="Fold" HorizontalAlignment="Center" Margin="0,295,0,0" VerticalAlignment="Top" Height="30" Width="50" Click="PlayerFoldButton_Click" RenderTransformOrigin="0.68,0.601"/>
+        <Label  x:Name="PlayerChancesTieLabel" Content="Tie: 0%" HorizontalAlignment="Left" Margin="661,170,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.609,0.541"/>
+        <Label x:Name="PlayerChancesLoseLabel" Content="Lose:0%" HorizontalAlignment="Left" Margin="661,0,0,0" VerticalAlignment="Center" RenderTransformOrigin="0.623,0.539"/>
+        <Label x:Name="PlayerChancesWinLabel" Content="Win: 0%" HorizontalAlignment="Left" Margin="661,142,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.622,0.464"/>
+        <Label x:Name="OpChancesWinLabel" Content="OpWin: 0%" HorizontalAlignment="Left" Margin="37,119,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.564,0.464"/>
+        <Label x:Name="OpChancesTieLabel" Content="OpTie: 0%" HorizontalAlignment="Left" Margin="35,155,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.565,0.502"/>
+        <Label x:Name="OpChancesLoseLabel" Content="OpLose: 0%" HorizontalAlignment="Left" Margin="35,186,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.622,0.502"/>
+        <Button x:Name="continueButton" Content="Continue" Margin="259,359,343,0" VerticalAlignment="Top" Click="continueButton_Click" RenderTransformOrigin="0.54,0.503"/>
+        <Label x:Name="GameWinnerLabel" Content="Winner" HorizontalAlignment="Left" Margin="321,21,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.602,0.579"/>
+        <Label  x:Name="PlayerBalanceLabel" Content="Player - $0" HorizontalAlignment="Left" Margin="689,13,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.573,0.541"/>
+        <Label x:Name="OpBalanceLabel" Content="CPU- $0" HorizontalAlignment="Left" Margin="18,13,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="PlayerHandLabel" Content="Hand: Name" HorizontalAlignment="Left" Margin="676,91,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.447,0.387"/>
+        <Label x:Name="OpHandLabel" Content="Hand: Name" HorizontalAlignment="Left" Margin="35,75,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.592,0.579"/>
+        <Label x:Name="PotBalanceLabel" Content="Pot -$1000" HorizontalAlignment="Left" Margin="309,47,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.575,0.541"/>
+        <Label x:Name="OpActionLabel" Content="CPU ACTION" HorizontalAlignment="Left" Margin="98,13,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.563,0.656"/>
+        <Label x:Name="PlayerActionLabel" Content="PLAYER ACTION" HorizontalAlignment="Left" Margin="593,10,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.556,0.541"/>
 
     </Grid>
 </Window>

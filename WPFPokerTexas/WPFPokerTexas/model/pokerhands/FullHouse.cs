@@ -12,12 +12,14 @@ namespace WPFPokerTexas.model.pokerhands
         public PokerHand.HandType Type => PokerHand.HandType.FULL_HOUSE;
 
     
-        public FullHouseHand(int trippleHigh, int pairLow)
+        public FullHouseHand(int trippleHigh, int pairLow, OrderedCardSet cards)
         {
+            CardSet = cards;
             TripleHigh = trippleHigh;
             PairLow = pairLow;
         }
 
+        public OrderedCardSet CardSet { get; }
         public int TripleHigh { get; }
         public int  PairLow { get; }
         public int CompareTo([AllowNull] PokerHand other)

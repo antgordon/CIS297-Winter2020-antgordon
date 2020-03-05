@@ -5,11 +5,11 @@ using WPFPokerTexas.model.pokerhands;
 
 namespace WPFPokerTexas.model
 {
-    public static class CardChances
+    public static class HoldemHand
     {
 
         //private static PokerHand.HandValidator[] testOrder;
-       static CardChances() {
+       static HoldemHand() {
             //           STRAIGHT_FLUSH, FOUR_KIND, FULL_HOUSE, FLUSH, STRAIGHT, THREE_KIND, TWO_PAIR, ONE_PAIR, HIGH_CARD
             /*testOrder = new PokerHand.HandValidator[] {
                 StraightFlushHand.StraightFlushValidator,
@@ -78,6 +78,16 @@ namespace WPFPokerTexas.model
             return best;
         }
 
+
+        public static OrderedCardSet GetOtherCards(OrderedCardSet fullDeck, OrderedCardSet playerCards, OrderedCardSet communityCards)
+        {
+
+            List<PlayingCard> remaining = new List<PlayingCard>(fullDeck.asList());
+            remaining.RemoveAll(card => playerCards.asList().Contains(card));
+            remaining.RemoveAll(card => communityCards.asList().Contains(card));
+
+            return new OrderedCardSet(remaining);
+        }
         public static List<OrderedCardSet> GetOpponentCombinationOfHandCards(OrderedCardSet fullDeck, OrderedCardSet playerCards, OrderedCardSet communityCards)
         {
             List<PlayingCard> remaining = new List<PlayingCard>(fullDeck.asList());
@@ -106,31 +116,42 @@ namespace WPFPokerTexas.model
             return results;
         }
 
-        public static HandPlayResult TestHandChances(OrderedCardSet otherCards, PokerHand hand)
+        public static HandPlayResult TestHandChances( PokerHand hand,  OrderedCardSet handCards, ICardDealer dealer)
         {
-            int wins = 0, losses= 0;
-            List<OrderedCardSet> allHands = GetOpponentCombinationOfHandCards(otherCards);
+
+            OrderedCardSet oponentSet = HoldemHand.GetOtherCards(dealer.FullDeck, handCards, dealer.CommunityCards);
+
+            int wins = 0, ties = 0, losses= 0;
+            List<OrderedCardSet> allHands = GetOpponentCombinationOfHandCards(oponentSet);
             foreach (OrderedCardSet iHand in allHands) {
 
-                PokerHand otherHand = IdentitfyHand(iHand);
+                PokerHand otherHand = HoldemHand.ChooseBestHand(iHand, dealer.CommunityCards);
                 int compare = hand.CompareTo(otherHand);
-                if (compare >0 )
+                if (compare > 0)
                 {
                     wins += 1;
                 }
-                else if (compare < 0) {
+                else if (compare < 0)
+                {
 
                     losses += 1;
+                }
+                else {
+                    ties += 1;
                 }
 
             }
 
-            return new HandPlayResult(allHands.Count, wins, losses);
+            return new HandPlayResult(allHands.Count, wins, ties, losses);
         }
 
 
         public static PokerHand IdentitfyHand(OrderedCardSet cards)
         {
+
+            if (cards.Count != 5) {
+                throw new ArgumentException("Illegal card count");
+            }
 
             /*PokerHand hand = null;
 
@@ -163,7 +184,7 @@ namespace WPFPokerTexas.model
 
             {//FourKind
 
-                PokerHand hand = DetectFourKind(cardFreq);
+                PokerHand hand = DetectFourKind(cardFreq, cards);
                 if (hand != null)
                     return hand;
 
@@ -171,14 +192,14 @@ namespace WPFPokerTexas.model
 
             {//Full House
 
-                PokerHand hand = DetectFullHouse(cardFreq);
+                PokerHand hand = DetectFullHouse(cardFreq, cards);
                 if (hand != null)
                     return hand;
 
             }
             {//Three Kind
 
-                PokerHand hand = DetectThreeKind(cardFreq);
+                PokerHand hand = DetectThreeKind(cardFreq, cards);
                 if (hand != null)
                     return hand;
 
@@ -186,7 +207,7 @@ namespace WPFPokerTexas.model
 
             {//Two Pair
 
-                PokerHand hand = DetectTwoPair(cardFreq);
+                PokerHand hand = DetectTwoPair(cardFreq, cards);
                 if (hand != null)
                     return hand;
 
@@ -194,7 +215,7 @@ namespace WPFPokerTexas.model
 
             {//One Pair
 
-                PokerHand hand = DetectOnePair(cardFreq);
+                PokerHand hand = DetectOnePair(cardFreq, cards);
                 if (hand != null)
                     return hand;
 
@@ -253,13 +274,13 @@ namespace WPFPokerTexas.model
             if (straightRank.HasValue && flushSuit.HasValue)
             {
 
-                return new StraightFlushHand(straightRank.Value, flushSuit.Value);
+                return new StraightFlushHand(straightRank.Value, flushSuit.Value, cards);
             }
             else
             {
                 if (straightRank.HasValue)
                 {
-                    return new StraightHand(straightRank.Value);
+                    return new StraightHand(straightRank.Value, cards);
                 }
                 else if (flushSuit.HasValue)
                 {
@@ -270,7 +291,7 @@ namespace WPFPokerTexas.model
             return null;
 
         }
-        public static PokerHand DetectFourKind(int[] cardFreq) {
+        public static PokerHand DetectFourKind(int[] cardFreq, OrderedCardSet cards) {
             int? four = null;
             int? one = null;
             for (int index = 0; index < cardFreq.Length; index += 1)
@@ -294,7 +315,7 @@ namespace WPFPokerTexas.model
    
             if (four.HasValue && one.HasValue)
             {
-                return new FourKindHand(four.Value, one.Value);
+                return new FourKindHand(four.Value, one.Value, cards);
             }
             else {
                 return null;
@@ -302,7 +323,7 @@ namespace WPFPokerTexas.model
             }
         }
 
-        public static PokerHand DetectFullHouse(int[] cardFreq)
+        public static PokerHand DetectFullHouse(int[] cardFreq, OrderedCardSet cards)
         {
             int? three = null;
             int? two = null;
@@ -326,7 +347,7 @@ namespace WPFPokerTexas.model
 
             if (three.HasValue && two.HasValue)
             {
-                return new FullHouseHand(three.Value, two.Value);
+                return new FullHouseHand(three.Value, two.Value, cards);
             }
             else
             {
@@ -336,7 +357,7 @@ namespace WPFPokerTexas.model
         }
 
 
-        public static PokerHand DetectThreeKind(int[] cardFreq)
+        public static PokerHand DetectThreeKind(int[] cardFreq, OrderedCardSet cards)
         {
             int? three = null;
             int? low = null;
@@ -367,7 +388,7 @@ namespace WPFPokerTexas.model
 
             if (three.HasValue && low.HasValue && high.HasValue)
             {
-                return new ThreeKindHand(three.Value, high.Value, low.Value);
+                return new ThreeKindHand(three.Value, high.Value, low.Value, cards);
             }
             else
             {
@@ -376,7 +397,7 @@ namespace WPFPokerTexas.model
             }
         }
 
-        public static PokerHand DetectTwoPair(int[] cardFreq)
+        public static PokerHand DetectTwoPair(int[] cardFreq, OrderedCardSet cards)
         {
             int? twoHigh = null;
             int? twoLow = null;
@@ -408,7 +429,7 @@ namespace WPFPokerTexas.model
 
             if (twoHigh.HasValue && twoLow.HasValue && kicker.HasValue)
             {
-                return new TwoPairHand(twoHigh.Value, twoLow.Value, kicker.Value);
+                return new TwoPairHand(twoHigh.Value, twoLow.Value, kicker.Value, cards);
             }
             else
             {
@@ -417,7 +438,7 @@ namespace WPFPokerTexas.model
             }
         }
 
-        public static PokerHand DetectOnePair(int[] cardFreq)
+        public static PokerHand DetectOnePair(int[] cardFreq, OrderedCardSet cards)
         {
             int? two = null;
             int? kickLow = null;
@@ -454,7 +475,7 @@ namespace WPFPokerTexas.model
 
             if (two.HasValue && kickLow.HasValue && kickMed.HasValue && kickHigh.HasValue)
             {
-                return new OnePairHand(two.Value, kickHigh.Value, kickMed.Value, kickLow.Value);
+                return new OnePairHand(two.Value, kickHigh.Value, kickMed.Value, kickLow.Value, cards);
             }
             else
             {
@@ -463,22 +484,31 @@ namespace WPFPokerTexas.model
             }
         }
 
-        public class HandPlayResult { 
-        
-            public int SampleCount { get; }
-            public int Wins { get; }
+        public class HandPlayResult {
 
-            public int Losses { get; }
 
-            public HandPlayResult(int sampleCount, int wins, int losses) {
+
+            public HandPlayResult(int sampleCount, int wins, int ties, int losses)
+            {
                 this.SampleCount = sampleCount;
                 this.Wins = wins;
+                this.Ties = ties;
                 this.Losses = losses;
             }
 
 
-          
+
+             public int SampleCount { get; }
+            public int Wins { get; }
+
+            public int Ties { get; }
+
+            public int Losses { get; }
         }
+
+
+          
+        
 
 
         private static IEnumerator<ValueTuple<int, int>> forwardLoop(int[] freq) {

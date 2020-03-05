@@ -9,11 +9,13 @@ namespace WPFPokerTexas.model.pokerhands
     {
         public PokerHand.HandType Type => PokerHand.HandType.STRAIGHT;
 
-        public StraightHand(int rank)
+        public StraightHand(int rank, OrderedCardSet cards)
         {
+            CardSet = cards;
             CardRank = rank;
         }
 
+        public OrderedCardSet CardSet { get; }
         public int CardRank { get; }
         public int CompareTo([AllowNull] PokerHand other)
         {

@@ -18,5 +18,14 @@ namespace WPFPokerTexas.model
         void NotifyOnTurn(int id);
 
         public OrderedCardSet HandCards { get; set; }
+
+        public HoldemHand.HandPlayResult HandChances { get; set; }
+
+        public bool IsTurn();
+    
+
+        public void FoldHand();
+
+        public void RaiseHand();
     }
 }

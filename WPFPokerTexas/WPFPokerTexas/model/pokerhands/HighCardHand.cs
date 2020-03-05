@@ -38,7 +38,7 @@ namespace WPFPokerTexas.model.pokerhands
 
                     OrderedCardSet self = CardSet;
                     OrderedCardSet outter = otherHand.CardSet;
-                    for (int high = CardSet.Count - 1; high >= 0; high += 1)
+                    for (int high = CardSet.Count - 1; high >= 0; high -= 1)
                     {
                         PlayingCard first = self.asList()[high];
                         PlayingCard second = outter.asList()[high];

@@ -12,12 +12,16 @@ namespace WPFPokerTexas.model.pokerhands
 
 
 
-        public OnePairHand(int pair, int kickerHigh, int kickerMed, int kickerLow) {
+        public OnePairHand(int pair, int kickerHigh, int kickerMed, int kickerLow, OrderedCardSet cards)
+        {
+            CardSet = cards;
             Pair = pair;
             KickerHigh = kickerHigh;
             KickerMed = kickerMed;
             KickerLow = kickerLow;
         }
+
+        public OrderedCardSet CardSet { get; }
 
         public int Pair { get; }
         public int KickerHigh { get; }

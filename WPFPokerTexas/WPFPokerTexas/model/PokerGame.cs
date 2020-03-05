@@ -8,10 +8,11 @@ namespace WPFPokerTexas.model
 
     public class PokerGame
     {
-      
+
         private GameStage stage;
+        public PokerGameListener GameListener {get; set;}
       
-        public PokerGame(ICardDealer dealer) {
+        public PokerGame(ICardDealer dealer, PokerGameListener listener) {
           
             this.GameDealer = dealer;
             Winner = WinStatus.TIE;
@@ -19,7 +20,13 @@ namespace WPFPokerTexas.model
             GameTurns = 0;
             HumanPlayer = new PokerPlayerHuman(0, this);
             RoboPlayer = new PokerPlayerRobo(1, this);
-            setupGame();
+            GameListener = listener;
+            HumanPlayer.Money = 100;
+            RoboPlayer.Money = 100;
+            stage = GameStage.INIT;
+         
+           
+
         }
 
         public GameStage Stage => stage;
@@ -39,24 +46,36 @@ namespace WPFPokerTexas.model
 
 
 
-        public void NotifyOnResponse(PokerPlayer player, PokerPlayer.PokerResponse responce) {
+        public void NotifyOnResponse(PokerPlayer player, PokerPlayer.PokerResponse response) {
             if (stage == GameStage.PLAYER_TURN && player == HumanPlayer)
             {
-                if (responce == PokerPlayer.PokerResponse.RAISE)
+                if (response == PokerPlayer.PokerResponse.RAISE)
                 {   
-                    sendRoboTurn();
+                    
                     player.Money -= 10;
                     Pot += 10;
+                    if (GameListener != null)
+                    {
+                        GameListener.OnPlayerResponse(response);
+                    }
+
+                    sendRoboTurn();
                 }
                 else {
+                    if (GameListener != null)
+                    {
+                        GameListener.OnPlayerResponse(response);
+                    }
                     distributePot(WinStatus.PLAYER_ROBO);
                 }
+
+               
             }
             else if (stage == GameStage.OPPONENT_TURN && player == RoboPlayer) {
-                if (responce == PokerPlayer.PokerResponse.RAISE)
+                if (response == PokerPlayer.PokerResponse.RAISE)
                 {
 
-                    player.Money -= 10;
+                    RoboPlayer.Money -= 10;
                     Pot += 10;
 
                     int compare = HumanPlayer.Hand.CompareTo(RoboPlayer.Hand);
@@ -75,10 +94,19 @@ namespace WPFPokerTexas.model
 
                     }
 
+                    if (GameListener != null)
+                    {
+                        GameListener.OnOpponentResponse(response);
+                    }
+
                     distributePot(win);
                 }
                 else
                 {
+                    if (GameListener != null)
+                    {
+                        GameListener.OnOpponentResponse(response);
+                    }
                     distributePot(WinStatus.PLAYER_HUMAN);
                 }
 
@@ -87,7 +115,7 @@ namespace WPFPokerTexas.model
 
 
         public enum GameStage {
-            SETUP, PLAYER_TURN, OPPONENT_TURN, DISTRIBUTE_POT, GAME_END,
+            INIT, SETUP, PLAYER_TURN, OPPONENT_TURN, DISTRIBUTE_POT, GAME_END,
 
         }
 
@@ -109,7 +137,13 @@ namespace WPFPokerTexas.model
             }
             else
             {
-                throw new Exception("Tie???");
+                RoboPlayer.Money += 20;
+
+                HumanPlayer.Money += 20;
+            }
+
+            if (GameListener != null) {
+                GameListener.PostDsitributePot();
             }
         }
 
@@ -118,10 +152,10 @@ namespace WPFPokerTexas.model
             GameTurns += 1;
             stage = GameStage.SETUP;
 
-            if (HumanPlayer.Money < 0 || RoboPlayer.Money < 0)
+            if (HumanPlayer.Money <= 0 || RoboPlayer.Money <= 0)
             {
 
-                //Should be needed since winner of the last round does not lose money
+                //Should not be needed since winner of the last round does not lose money
                /* if (RoboPlayer.Money < 0)
                 {
                     Winner = WinStatus.PLAYER_HUMAN;
@@ -133,6 +167,7 @@ namespace WPFPokerTexas.model
 
             
                 endGame();
+                return;
             }
             else
             {
@@ -144,10 +179,21 @@ namespace WPFPokerTexas.model
                 RoboPlayer.Hand = null;
                 GameDealer.ShuffleAndDealDeck(HumanPlayer, RoboPlayer);
 
-                HumanPlayer.Hand = CardChances.ChooseBestHand(HumanPlayer.HandCards, GameDealer.CommunityCards);
-                RoboPlayer.Hand = CardChances.ChooseBestHand(RoboPlayer.HandCards, GameDealer.CommunityCards);
-              
+                HumanPlayer.Hand = HoldemHand.ChooseBestHand(HumanPlayer.HandCards, GameDealer.CommunityCards);
+                RoboPlayer.Hand = HoldemHand.ChooseBestHand(RoboPlayer.HandCards, GameDealer.CommunityCards);
+                HumanPlayer.HandChances = HoldemHand.TestHandChances(HumanPlayer.Hand, HumanPlayer.HandCards, GameDealer);
+                RoboPlayer.HandChances = HoldemHand.TestHandChances(RoboPlayer.Hand, RoboPlayer.HandCards, GameDealer);
+
             }
+
+     
+
+            if (GameListener != null)
+            {
+                GameListener.PostGameSetup();
+            }
+
+            sendPlayerTurn();
         }
 
 
@@ -167,13 +213,19 @@ namespace WPFPokerTexas.model
 
         public void endGame() {
             stage = GameStage.GAME_END;
+            if (GameListener != null)
+            {
+                GameListener.OnGameEnd();
+            }
         }
 
 
-        private void moveStage() {
+       public void MoveStage() {
             switch (stage)
             {
-
+                case GameStage.INIT:
+                    setupGame();
+                    break;
                 case GameStage.GAME_END:
                     break;
                 case GameStage.SETUP:
@@ -190,65 +242,6 @@ namespace WPFPokerTexas.model
             }
         }
 
-        private void moveStage(GameStage gameStage) {
-
-            switch (gameStage) {
-
-                case GameStage.GAME_END: { } break;
-                case GameStage.SETUP: {
-                        GameTurns += 1;
-
-                        if (HumanPlayer.Money < 0 || RoboPlayer.Money < 0) {
-                            moveStage(GameStage.GAME_END);
-                        } else {
-                            Pot = 20;
-                            HumanPlayer.Money -= 10;
-                            RoboPlayer.Money -= 10;
-
-                            HumanPlayer.Hand = null;
-                            RoboPlayer.Hand = null;
-                            GameDealer.ShuffleAndDealDeck(HumanPlayer, RoboPlayer);
-
-                            HumanPlayer.Hand = CardChances.ChooseBestHand(HumanPlayer.HandCards, GameDealer.CommunityCards);
-                            RoboPlayer.Hand = CardChances.ChooseBestHand(RoboPlayer.HandCards, GameDealer.CommunityCards);
-                            moveStage(GameStage.PLAYER_TURN);
-
-                        }
-
-
-                    } break;
-                case GameStage.PLAYER_TURN: {
-                        HumanPlayer.NotifyOnTurn(GameTurns);
-                    } break;
-                case GameStage.OPPONENT_TURN: {
-
-                        RoboPlayer.NotifyOnTurn(GameTurns);
-                    } break;
-
-                case GameStage.DISTRIBUTE_POT: {
-         
-
-                        if (Winner == WinStatus.PLAYER_HUMAN)
-                        {
-                            HumanPlayer.Money += Pot;
-                            moveStage(GameStage.SETUP);
-
-                        }
-                        else if (Winner == WinStatus.PLAYER_ROBO)
-                        {
-                            RoboPlayer.Money += Pot;
-                            moveStage(GameStage.SETUP);
-                        }
-                        else {
-                            throw new Exception("Tie???");
-                        }
-
-
-                    } break;
-  
-            }
-
-        }
     }
          
 }

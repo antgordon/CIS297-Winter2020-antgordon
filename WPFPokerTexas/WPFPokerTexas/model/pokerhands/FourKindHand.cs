@@ -10,12 +10,16 @@ namespace WPFPokerTexas.model.pokerhands
         public PokerHand.HandType Type => PokerHand.HandType.FOUR_KIND;
 
 
-        public FourKindHand(int fourCardRank, int kicker) {
+        public FourKindHand(int fourCardRank, int kicker, OrderedCardSet cards)
+        {
+            CardSet = cards;
             FourCardRank = fourCardRank;
             Kicker = kicker;
         }
 
         public int FourCardRank { get; }
+
+        public OrderedCardSet CardSet { get; }
 
         public int Kicker { get; }
         public int CompareTo([AllowNull] PokerHand other)

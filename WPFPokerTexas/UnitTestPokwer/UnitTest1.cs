@@ -12,7 +12,7 @@ namespace UnitTestPokwer
 
         private PokerHand.HandType GetType(PlayingCard one, PlayingCard two, PlayingCard three, PlayingCard four, PlayingCard five) {
             OrderedCardSet cards = new OrderedCardSet(new List<PlayingCard> { one, two, three, four, five });
-            PokerHand hand = CardChances.IdentitfyHand(cards);
+            PokerHand hand = HoldemHand.IdentitfyHand(cards);
           
             return hand.Type;
         }
@@ -20,7 +20,7 @@ namespace UnitTestPokwer
         private PokerHand GetHand(PlayingCard one, PlayingCard two, PlayingCard three, PlayingCard four, PlayingCard five)
         {
             OrderedCardSet cards = new OrderedCardSet(new List<PlayingCard> { one, two, three, four, five });
-            PokerHand hand = CardChances.IdentitfyHand(cards);
+            PokerHand hand = HoldemHand.IdentitfyHand(cards);
             return hand;
         }
 
@@ -323,10 +323,11 @@ namespace UnitTestPokwer
             PokerPlayer pl2 = new FakePokerPlayer();
             ICardDealer dealer = new DefaultCardDealer();
             dealer.ShuffleAndDealDeck(pl1, pl2);
-            List<OrderedCardSet> p1PossHands = CardChances.GetOpponentCombinationOfHandCards(dealer.FullDeck, pl2.HandCards, dealer.CommunityCards);
-            List<OrderedCardSet> p2PossHands = CardChances.GetOpponentCombinationOfHandCards(dealer.FullDeck, pl1.HandCards, dealer.CommunityCards);
+            List<OrderedCardSet> p1PossHands = HoldemHand.GetOpponentCombinationOfHandCards(dealer.FullDeck, pl2.HandCards, dealer.CommunityCards);
+            List<OrderedCardSet> p2PossHands = HoldemHand.GetOpponentCombinationOfHandCards(dealer.FullDeck, pl1.HandCards, dealer.CommunityCards);
 
             List<PlayingCard> totalCards = new List<PlayingCard>();
+           
             totalCards.AddRange(pl1.HandCards);
             totalCards.AddRange(dealer.CommunityCards);
             Assert.AreEqual(7, totalCards.Count);
@@ -354,13 +355,22 @@ namespace UnitTestPokwer
 
             Assert.AreEqual(21, count);
 
-            List<OrderedCardSet> p1PokerHands = CardChances.GetCombinationOfPokerHands(pl1.HandCards, dealer.CommunityCards);
-            List<OrderedCardSet> p2PokerHands = CardChances.GetCombinationOfPokerHands(pl2.HandCards, dealer.CommunityCards);
+            List<OrderedCardSet> p1PokerHands = HoldemHand.GetCombinationOfPokerHands(pl1.HandCards, dealer.CommunityCards);
+            List<OrderedCardSet> p2PokerHands = HoldemHand.GetCombinationOfPokerHands(pl2.HandCards, dealer.CommunityCards);
 
             Assert.AreEqual(990, p1PossHands.Count);
             Assert.AreEqual(990, p2PossHands.Count);
             Assert.AreEqual(21, p1PokerHands.Count);
             Assert.AreEqual(21, p2PokerHands.Count);
+
+            pl1.Hand = HoldemHand.ChooseBestHand(pl1.HandCards, dealer.CommunityCards);
+            pl2.Hand = HoldemHand.ChooseBestHand(pl2.HandCards, dealer.CommunityCards);
+
+          //  OrderedCardSet set = CardChances.GetOtherCards(dealer.FullDeck, pl2.HandCards, dealer.CommunityCards);
+
+            HoldemHand.HandPlayResult result = HoldemHand.TestHandChances( pl1.Hand,pl1.HandCards, dealer);
+
+            Assert.AreEqual(990, result.Wins + result.Losses + result.Ties);
         }
 
 
@@ -371,10 +381,75 @@ namespace UnitTestPokwer
             public int Money { get; set; }
             public PokerHand Hand { get; set; }
             public OrderedCardSet HandCards { get; set; }
+            public HoldemHand.HandPlayResult HandChances { get; set; }
+
+            public void FoldHand()
+            {
+                throw new System.NotImplementedException();
+            }
+
+            public bool IsTurn()
+            {
+                throw new System.NotImplementedException();
+            }
 
             public void NotifyOnTurn(int id)
             {
                 throw new System.NotImplementedException();
+            }
+
+            public void RaiseHand()
+            {
+                throw new System.NotImplementedException();
+            }
+        }
+
+
+        private class FakeGamePokerPlayer : PokerPlayer
+        {
+            private PokerGame game;
+            private int id;
+
+            public FakeGamePokerPlayer(int id, PokerGame game)
+            {
+                this.id = id;
+                this.game = game;
+            }
+
+            public int Id => id;
+
+            public int Money { get; set; }
+            public PokerHand Hand { get; set; }
+            public OrderedCardSet HandCards { get; set; }
+            public HoldemHand.HandPlayResult HandChances { get; set; }
+
+            public void NotifyOnTurn(int id)
+            {
+                
+
+            }
+
+            public bool IsTurn()
+            {
+                return game.Stage == PokerGame.GameStage.OPPONENT_TURN;
+            }
+
+            public void FoldHand()
+            {
+                if (game.Stage == PokerGame.GameStage.OPPONENT_TURN)
+                {
+                    game.NotifyOnResponse(this, PokerPlayer.PokerResponse.FOLD);
+
+                }
+            }
+
+            public void RaiseHand()
+            {
+                if (game.Stage == PokerGame.GameStage.OPPONENT_TURN)
+                {
+                    game.NotifyOnResponse(this, PokerPlayer.PokerResponse.RAISE);
+
+                }
             }
         }
 

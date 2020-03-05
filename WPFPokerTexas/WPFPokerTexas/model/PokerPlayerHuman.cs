@@ -18,6 +18,8 @@
         public PokerHand Hand { get; set; }
         public OrderedCardSet HandCards { get; set; }
 
+        public HoldemHand.HandPlayResult HandChances { get; set; }
+
 
         public bool IsTurn() {
             return game.Stage == PokerGame.GameStage.PLAYER_TURN;

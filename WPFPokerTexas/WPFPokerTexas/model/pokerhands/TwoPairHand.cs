@@ -8,12 +8,16 @@ namespace WPFPokerTexas.model.pokerhands
     public class TwoPairHand : PokerHand
     {
         public PokerHand.HandType Type => PokerHand.HandType.TWO_PAIR;
-        public TwoPairHand(int pairHigh, int pairLow ,int kicker) {
+        public TwoPairHand(int pairHigh, int pairLow ,int kicker, OrderedCardSet cards)
+        {
+            CardSet = cards;
             PairHigh = pairHigh;
             PairLow = pairLow;
             Kicker = kicker;
         }
 
+
+        public OrderedCardSet CardSet { get;  }
         public int PairHigh { get; }
         public int PairLow { get; }
         public int Kicker { get; }
